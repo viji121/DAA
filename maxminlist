@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+
+void findMaxMin(int arr[], int low, int high, int *max, int *min) {
+    if (low == high) { 
+        *max = arr[low];
+        *min = arr[low];
+    } else if (high - low == 1) { 
+        *max = (arr[low] > arr[high]) ? arr[low] : arr[high];
+        *min = (arr[low] < arr[high]) ? arr[low] : arr[high];
+    } else { 
+        int mid = (low + high) / 2;
+        int leftMax, leftMin, rightMax, rightMin;
+
+        
+        findMaxMin(arr, low, mid, &leftMax, &leftMin);
+        findMaxMin(arr, mid + 1, high, &rightMax, &rightMin);
+
+        
+        *max = (leftMax > rightMax) ? leftMax : rightMax;
+        *min = (leftMin < rightMin) ? leftMin : rightMin;
+    }
+}
+
+int main() {
+    int arr[] = {3, 7, 1, 9, 4, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int max, min;
+
+    
+    findMaxMin(arr, 0, n - 1, &max, &min);
+
+    printf("Maximum value in the list: %d\n", max);
+    printf("Minimum value in the list: %d\n", min);
+
+    return 0;
+}
