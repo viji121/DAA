@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 100
+
+
+int set[MAX_SIZE]; 
+int subset[MAX_SIZE]; 
+int n, sum; 
+bool solutionExists = false; 
+
+
+void generateSubsets(int index, int currentSum);
+void printSubset(int size);
+
+
+void generateSubsets(int index, int currentSum) {
+    if (currentSum == sum) {
+        printSubset(index); 
+        solutionExists = true;
+    }
+
+    if (index == n || currentSum > sum) {
+        return; // Stop recursion if index exceeds set size or currentSum exceeds target sum
+    }
+
+    // Include the current element in the subset
+    subset[index] = set[index];
+    generateSubsets(index + 1, currentSum + set[index]);
+
+    // Exclude the current element from the subset
+    subset[index] = 0;
+    generateSubsets(index + 1, currentSum);
+}
+
+// Function to print the subset
+void printSubset(int size) {
+    printf("{ ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", subset[i]);
+    }
+    printf("}\n");
+}
+
+int main() {
+    int i;
+
+    printf("Enter the size of the set: ");
+    scanf("%d", &n);
+
+    printf("Enter the elements of the set:\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &set[i]);
+    }
+
+    printf("Enter the target sum: ");
+    scanf("%d", &sum);
+
+    printf("Subsets with sum equal to %d:\n", sum);
+    generateSubsets(0, 0);
+
+    if (!solutionExists) {
+        printf("No subset found with sum equal to %d\n", sum);
+    }
+
+    return 0;
+}
